@@ -1,7 +1,7 @@
 # Lab 1 – Cryptographic Primitives and Digital Signatures
 
 ## How to run
-Requires Python 3 and the `cryptography` package (`pip install cryptography`).
+Requires Python 3 and the `cryptography` package (`pip install -r requirements.txt`).
 
 ```
 cd lab1_crypto_signatures

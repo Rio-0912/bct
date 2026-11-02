@@ -1,7 +1,7 @@
 # Lab 7 – Local Ethereum with Ethers.js
 
 ## How to run
-Requires Node.js; dependencies are in the repo root `node_modules`. Ganache is deprecated, so `hardhat node` is used as the local RPC endpoint (same role).
+Requires Node.js. This lab has its own `package.json`; install once with `npm install --legacy-peer-deps`. Ganache is deprecated, so `hardhat node` is used as the local RPC endpoint (same role).
 
 Terminal 1 – start the local node:
 ```
@@ -36,6 +36,8 @@ $env:VALUE=3; $env:TO_INDEX=2; node scripts/lab7.js   # PowerShell
 - Final section sends an over-balance token transfer to show the revert reason (Task 4).
 
 **`contracts/Token.sol`** – minimal ERC-20-like `SimpleToken`: `balanceOf`, `transfer` (reverts with "Insufficient token balance"), `Transfer` event.
+
+**`package.json`** – this lab's own dependencies (Hardhat, ethers) and npm scripts (`npm run compile`, `npm start`, `npm run node`).
 
 **`hardhat.config.js`** – Solidity 0.8.20; compiling creates `artifacts/`, which the script reads for the ABI and bytecode.
 

@@ -3,7 +3,7 @@
 > **Note:** this is a pure-Python **simulation** of Fabric's execute–order–validate flow. It is not a real Fabric network and uses no Docker or Fabric binaries.
 
 ## How to run
-Requires Python 3 and the `cryptography` package.
+Requires Python 3 and the `cryptography` package (`pip install -r requirements.txt`).
 
 ```
 cd lab9_fabric_asset

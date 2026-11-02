@@ -1,7 +1,7 @@
 # Lab 5 – Solidity Smart Contract Development
 
 ## How to run
-Requires Node.js. Dependencies (Hardhat, ethers) live in the repo root `node_modules` – run `npm install --legacy-peer-deps` in the repo root if missing.
+Requires Node.js. This lab has its own `package.json`; install once with `npm install --legacy-peer-deps`.
 
 ```
 cd lab5_solidity_contract
@@ -23,6 +23,8 @@ Hardhat's built-in local blockchain is used, so no separate node is needed. A sa
 - `getBalance(user)` – read-only query.
 
 **`scripts/lab5.js`** – deploys and runs the tasks: deploy (address, block, gas), deposit 1 ETH (state change), read balance, print receipt (hash, status, block, gas, event), then raise `minDeposit` to 2 ETH and show a 0.5 ETH deposit now reverts while 2.5 ETH works, and a non-owner is rejected.
+
+**`package.json`** – this lab's own dependencies (Hardhat, ethers) and npm scripts (`npm run compile`, `npm start`).
 
 **`hardhat.config.js`** – Solidity version 0.8.20 and an optional `localnode` network entry.
 

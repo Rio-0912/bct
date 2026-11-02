@@ -14,5 +14,5 @@ Saved output of each run is in `labN*.output.txt` next to each script.
 | 8 | `cd lab8_private_network && python lab8.py` (Docker running); `python lab8.py cleanup` | 3 geth nodes, Clique PoA |
 | 9 | `python lab9_fabric_asset/lab9.py` | Python SIMULATION of Fabric flow (not a real Fabric network) |
 
-`node_modules` (hardhat, ethers) is shared at the repo root: run `npm install` here if missing.
+Labs 5-7 each have their own `package.json`: run `npm install --legacy-peer-deps` inside the lab folder first. Labs 1 and 9 have a `requirements.txt` (`pip install -r requirements.txt`); the other Python labs use only the standard library, and Lab 8 needs Docker.
 Lab 7 uses `hardhat node` as the local RPC in place of Ganache (Ganache is deprecated).

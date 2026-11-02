@@ -1,0 +1,12 @@
+{
+  "name": "lab7-ethers-local",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CS413 Blockchain lab",
+  "scripts": { "compile": "hardhat compile", "node": "hardhat node", "start": "node scripts/lab7.js" },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "ethers": "^6.0.0",
+    "hardhat": "2.22.17"
+  }
+}
