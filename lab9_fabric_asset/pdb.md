@@ -1,5 +1,38 @@
 # Lab 9 – Hyperledger Fabric Asset Transaction
 
+## 0. One-time setup (start here if you only copy-pasted the code)
+
+### Prerequisites
+| Need | Check with | If missing |
+|---|---|---|
+| Python 3.9+ | `python --version` (on Mac/Linux use `python3`) | install from python.org; on Windows tick **"Add python.exe to PATH"** |
+| pip | `python -m pip --version` | comes with Python |
+
+### Install the dependency
+```
+cd lab9_fabric_asset
+pip install -r requirements.txt
+```
+or `pip install cryptography`. Nothing else is needed: this lab is a Python simulation, so there is **no Docker, no Fabric binaries and no `package.json`**.
+
+### If your exam uses REAL Hyperledger Fabric (not this simulation)
+You would need Docker Desktop running, Git, `curl`, and on Windows a Linux-like environment (WSL2 Ubuntu is the supported route). The official sequence from the Fabric docs, shown for orientation only (it was not run in this project):
+```
+curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
+./install-fabric.sh docker samples binary
+cd fabric-samples/test-network
+./network.sh up createChannel -c mychannel -ca
+./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go -ccl go
+```
+It downloads several GB of Docker images, so do it in advance with internet.
+
+### Common errors
+| Error | Fix |
+|---|---|
+| `ModuleNotFoundError: No module named 'cryptography'` | `python -m pip install cryptography` |
+
+&nbsp;
+
 > **Note:** this is a pure-Python **simulation** of Fabric's execute–order–validate flow. It is not a real Fabric network and uses no Docker or Fabric binaries.
 
 ## How to run

@@ -1,5 +1,42 @@
 # Lab 8 – Private Ethereum Network (3 Nodes)
 
+## 0. One-time setup (start here if you only copy-pasted the code)
+
+### Prerequisites
+| Need | Check with | If missing |
+|---|---|---|
+| Python 3.9+ | `python --version` | python.org |
+| Docker Desktop (Windows needs the WSL2 backend) | `docker --version` | docker.com; **start Docker Desktop and wait until it says running** |
+| Docker daemon actually running | `docker info` (must print "Server Version") | open Docker Desktop; the error "cannot find the file specified ... dockerDesktopLinuxEngine" means it is not started |
+| Internet, once | - | first run pulls the image (~100 MB) |
+| ~1 GB free disk and a free subnet `172.30.0.0/24` | `docker network ls` | change `SUBNET`/`NODES` in `lab8.py` if it clashes |
+
+### Dependencies
+No `pip install` and no `package.json` - the script uses only Python's standard library and calls the `docker` command. Geth runs *inside* Docker, so you do not install it.
+
+Pull the image ahead of time (so the exam run needs no internet):
+```
+docker pull ethereum/client-go:v1.13.15
+```
+Use exactly `v1.13.15` (or any 1.13.x): Geth 1.14+ removed Clique block production, so nodes would not mine.
+
+### What gets created (and how to reset)
+The script creates containers `lab8-node1..3`, volumes `lab8-data1..3` (each node's chain data and account key) and a Docker network `lab8net`. `lab8.py` deletes old ones at the start, so reruns are safe. To clean manually:
+```
+python lab8.py cleanup
+```
+
+### Common errors
+| Error | Fix |
+|---|---|
+| `failed to connect to the docker API` | Docker Desktop is not running - start it, wait 30-60 s |
+| Git Bash path mangling (`C:/Program Files/Git/root/.ethereum`) | prefix with `MSYS_NO_PATHCONV=1 python lab8.py`, or use PowerShell |
+| `Pool overlaps with other one on this address space` | another Docker network uses 172.30.0.0/24; change `SUBNET` and the `NODES` IPs at the top of `lab8.py` |
+| `peerCount` is 0 | nodes need `admin.addPeer(enode)` (the script does it); check same `networkid` and genesis |
+| `pull access denied` / timeout | no internet; run `docker pull` when online |
+
+&nbsp;
+
 ## How to run
 Requires Python 3 and **Docker Desktop running**. The first run pulls the `ethereum/client-go:v1.13.15` image. It takes about 1–2 minutes.
 

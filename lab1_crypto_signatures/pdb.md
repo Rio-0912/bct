@@ -1,5 +1,30 @@
 # Lab 1 – Cryptographic Primitives and Digital Signatures
 
+## 0. One-time setup (start here if you only copy-pasted the code)
+
+### Prerequisites
+| Need | Check with | If missing |
+|---|---|---|
+| Python 3.9+ | `python --version` (on Mac/Linux use `python3`) | install from python.org; on Windows tick **"Add python.exe to PATH"** |
+| pip | `python -m pip --version` | comes with Python |
+
+### Install the dependency
+```
+cd lab1_crypto_signatures
+pip install -r requirements.txt
+```
+or just `pip install cryptography`. (`hashlib` is built into Python; nothing else is needed.)
+
+Verify: `python -c "import cryptography; print(cryptography.__version__)"`
+
+### Common errors
+| Error | Fix |
+|---|---|
+| `ModuleNotFoundError: No module named 'cryptography'` | `python -m pip install cryptography` (uses the same Python you run) |
+| `'python' is not recognized` | reinstall Python with "Add to PATH", or use `py` on Windows / `python3` on Mac/Linux |
+
+&nbsp;
+
 ## How to run
 Requires Python 3 and the `cryptography` package (`pip install -r requirements.txt`).
 

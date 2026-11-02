@@ -1,5 +1,24 @@
 # Lab 4 – Proof-of-Work, Nonce and Mining Difficulty
 
+## 0. One-time setup (start here if you only copy-pasted the code)
+
+### Prerequisites
+| Need | Check with | If missing |
+|---|---|---|
+| Python 3.9+ | `python --version` (on Mac/Linux use `python3`) | install from python.org; on Windows tick **"Add python.exe to PATH"** |
+| pip | `python -m pip --version` | comes with Python |
+
+### Dependencies
+**None.** This lab uses only Python's standard library (`hashlib`, `json`, `time`). Just create `lab4.py`, paste the code and run it. No `pip install`, no `package.json`.
+
+### Common errors
+| Error | Fix |
+|---|---|
+| `'python' is not recognized` | reinstall Python with "Add to PATH", or use `py` / `python3` |
+| (Lab 4) takes long | difficulty 6 needs ~16 million hashes (seconds to a minute); lower the loop range if in a hurry |
+
+&nbsp;
+
 ## How to run
 Requires only Python 3 (standard library). Difficulty 6 takes a few seconds.
 
