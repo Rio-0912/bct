@@ -1,0 +1,33 @@
+=== Tasks 1-2: create chain with 3 blocks (+genesis) ===
+  #0 data='Genesis Block'
+     prev=00000000000000000000...
+     hash=a2d4f1418ff8c396702b...
+  #1 data='Alice pays Bob 10'
+     prev=a2d4f1418ff8c396702b...
+     hash=137d2d61905bd07aed3a...
+  #2 data='Bob pays Carol 4'
+     prev=137d2d61905bd07aed3a...
+     hash=703358ef16cd0f5e7928...
+  #3 data='Carol pays Dave 2'
+     prev=703358ef16cd0f5e7928...
+     hash=06c6ac9d316251519e67...
+
+=== Task 3: validate original chain ===
+Chain valid: True
+
+=== Task 4a: tamper block 1 data (hash NOT recomputed) ===
+  INVALID: block 1 content does not match its stored hash
+Chain valid: False
+
+=== Task 4b: attacker recomputes block 1 hash ===
+  INVALID: block 2 previous_hash != hash of block 1
+Chain valid: False
+
+=== Task 4c: attacker re-links ALL later blocks ===
+Chain valid: True (only stopped by PoW / consensus - see Lab 4)
+
+Explanation: each block stores the hash of its predecessor. Altering block 1
+changes its hash, so block 2's previous_hash no longer matches, and the mismatch
+cascades to every later block. To hide a change the attacker must recompute every
+subsequent block; in a real network that also requires redoing proof-of-work
+faster than honest nodes, which is computationally infeasible.

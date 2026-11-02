@@ -1,0 +1,28 @@
+=== Task 1: SHA-256 ===
+Message : Alice pays Bob 5 BTC | nonce=42
+Digest  : 95b5e821f2603f430c3e7fcc0922dc9531731ed65b6181e200b0e5a366302302
+
+=== Task 2: Generate keys and sign ===
+Public key (PEM):
+-----BEGIN PUBLIC KEY-----
+MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAE0Mw1fs2puZauUUzZHpZA6ovlBYOe5d96
+Z+oPzc/r0VlRqk1qS3fv1uFWdC0AwmLSXBUnlP6BV4GtU7Re0lgIcg==
+-----END PUBLIC KEY-----
+
+Signature (hex): 3045022100df072f3642ea0d1f025963b6a600d0c790b70f97b755c297214cedf10bd775d602206b4c36ba1bd95fdf1f544a3480da9110054b7aec3e15487ecd318a310b888415
+
+=== Task 3: Verify original ===
+Verification result: True
+
+=== Task 4: Tamper with message ===
+Tampered message   : Alice pays Bob 500 BTC | nonce=42
+Tampered SHA-256   : 2aec0a7ab5f7a58a6ae4d84dac79a080eda1a0436bc99a909d8b077467004eba
+Verification result: False
+
+Explanation: a signature is computed over the hash of the message. Changing even
+one character gives a completely different SHA-256 digest (avalanche effect), so
+the signature no longer matches -> verification fails. This gives:
+ - Integrity: any modification of a transaction is detected.
+ - Authentication / non-repudiation: only the holder of the private key could
+   produce a valid signature, verifiable by anyone with the public key.
+Blockchains rely on this so nobody can alter or forge transactions.

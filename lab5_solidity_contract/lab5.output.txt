@@ -1,0 +1,22 @@
+=== Task 1: Deploy SimpleBank ===
+Address: 0x5FbDB2315678afecb367f032d93F642f64180aa3 | deployed in block 1 | gas 628234
+
+=== Task 2: state change (deposit 1 ETH) + read ===
+balances[user] = 1.0 ETH
+
+=== Task 3: transaction details ===
+tx hash : 0xef62c21ecf5f2746c0e0e3a4e4b35a1a3a7ebb7168db57f7ad30938252f9f725
+status  : SUCCESS
+block   : 2
+gas used: 47329
+events  : [
+  'Deposited 0x70997970C51812dc3A010C7d01b50e0d17dc79C8,1000000000000000000'
+]
+contract ETH balance: 1.0
+
+=== Task 4: modify rule - owner raises minDeposit to 2 ETH ===
+Before: 0.5 ETH deposit allowed? -> yes
+minDeposit now: 2.0 ETH
+After : 0.5 ETH deposit allowed? -> NO (Deposit below minimum)
+After : 2.5 ETH deposit allowed? -> yes
+non-owner setMinDeposit reverted -> Only owner

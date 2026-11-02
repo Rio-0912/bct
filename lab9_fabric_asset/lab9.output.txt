@@ -1,0 +1,48 @@
+=== Task 1: channel 'mychannel' ===
+  peer peer0.org1 (org Org1) joined; chaincode 'basic' installed; policy = AND(Org1, Org2)
+  peer peer0.org2 (org Org2) joined; chaincode 'basic' installed; policy = AND(Org1, Org2)
+
+=== Task 2: create + query asset ===
+  1. PROPOSAL     client -> ['peer0.org1', 'peer0.org2']: CreateAsset('asset1', 'blue', '5', 'Tomoko')
+  2. ENDORSEMENT  2 signed responses; rwset = {"reads": {"asset1": 0}, "writes": {"asset1": {"ID": "asset1", "color": "blue", "size": 5, "owner": "Tomoko"}}}
+  3. ORDERING     orderer cut block #0 with 1 tx (no chaincode executed)
+  4. VALIDATION   peer0.org1: [('tx001', 'VALID')]
+  4. VALIDATION   peer0.org2: [('tx001', 'VALID')]
+  5. COMMIT       block #0 appended on all peers; world state updated for VALID txs
+  Query asset1 on peer0.org2: {'ID': 'asset1', 'color': 'blue', 'size': 5, 'owner': 'Tomoko'}
+
+=== Task 3: transfer asset1 to Brad, verify ledger/world state ===
+  1. PROPOSAL     client -> ['peer0.org1', 'peer0.org2']: TransferAsset('asset1', 'Brad')
+  2. ENDORSEMENT  2 signed responses; rwset = {"reads": {"asset1": 1}, "writes": {"asset1": {"ID": "asset1", "color": "blue", "size": 5, "owner": "Brad"}}}
+  3. ORDERING     orderer cut block #1 with 1 tx (no chaincode executed)
+  4. VALIDATION   peer0.org1: [('tx002', 'VALID')]
+  4. VALIDATION   peer0.org2: [('tx002', 'VALID')]
+  5. COMMIT       block #1 appended on all peers; world state updated for VALID txs
+    peer0.org1 state: {"asset1": {"ID": "asset1", "color": "blue", "owner": "Brad", "size": 5, "v": 2}}
+    peer0.org2 state: {"asset1": {"ID": "asset1", "color": "blue", "owner": "Brad", "size": 5, "v": 2}}
+  both peers agree: owner = Brad (version incremented to 2)
+  ledger height: [2, 2] | block flags: [['VALID'], ['VALID']]
+
+=== Task 4a: troubleshoot - tx endorsed by ONLY Org1 (policy needs both) ===
+  1. PROPOSAL     client -> ['peer0.org1']: UpdateAsset('asset1', 'red', '9')
+  2. ENDORSEMENT  1 signed responses; rwset = {"reads": {"asset1": 2}, "writes": {"asset1": {"ID": "asset1", "color": "red", "size": 9, "owner": "Brad"}}}
+  3. ORDERING     orderer cut block #2 with 1 tx (no chaincode executed)
+  4. VALIDATION   peer0.org1: [('tx003', 'ENDORSEMENT_POLICY_FAILURE')]
+  4. VALIDATION   peer0.org2: [('tx003', 'ENDORSEMENT_POLICY_FAILURE')]
+  5. COMMIT       block #2 appended on all peers; world state updated for VALID txs
+  asset1 unchanged: {'ID': 'asset1', 'color': 'blue', 'size': 5, 'owner': 'Brad'}
+  -> flagged ENDORSEMENT_POLICY_FAILURE: the tx IS in the block (ledger is immutable) but marked invalid;
+     fix: collect an endorsement from a peer of Org2 as well.
+
+=== Task 4b: troubleshoot - two concurrent txs on the same key (MVCC conflict) ===
+  both simulated against version 2, ordered into one block -> [('tx004', 'VALID'), ('tx005', 'MVCC_READ_CONFLICT')]
+  first wins, second invalid (MVCC_READ_CONFLICT); owner now: Carol
+  fix: client resubmits the second transaction (it will read the new version).
+
+=== Task 4c: tampered endorsement is rejected ===
+  result: [('tx006', 'ENDORSEMENT_MISMATCH')] (tampered endorsement disagrees with the other peer; its signature would also fail)
+
+Transaction path: Proposal -> Endorsement (peers execute chaincode, sign rwset) ->
+Ordering (orderer sequences txs into blocks, never executes them) -> Validation
+(each peer checks endorsement policy + MVCC versions) -> Commit (block appended,
+world state updated only for VALID txs; invalid txs stay on the ledger flagged).

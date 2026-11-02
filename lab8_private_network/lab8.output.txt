@@ -1,0 +1,37 @@
+
+======== TASK 1: start 3 preinitialised nodes (same genesis, Clique PoA, chainId 1337) ========
+lab8-node3  Up 6 seconds  lab8net
+lab8-node2  Up 6 seconds  lab8net
+lab8-node1  Up 7 seconds  lab8net
+node1: ip=172.30.0.11 signer/account=0x483793b3a835c37a14b3cab286048d2da9c262b1
+node2: ip=172.30.0.12 signer/account=0x486fb389bfdab74f066bc19e31a7183d702fbafa
+node3: ip=172.30.0.13 signer/account=0x5a00e2470a54fa99b7ca4146440a11c913708e92
+
+======== TASK 2: same network & peer connectivity ========
+node1: peerCount=2  genesisHash="0x7529eef5e3292e4984d50cbda0f34bab2a0a231f46d7970c162aa2821c3c69a7"  networkId=1337  block=3
+node2: peerCount=2  genesisHash="0x7529eef5e3292e4984d50cbda0f34bab2a0a231f46d7970c162aa2821c3c69a7"  networkId=1337  block=4
+node3: peerCount=2  genesisHash="0x7529eef5e3292e4984d50cbda0f34bab2a0a231f46d7970c162aa2821c3c69a7"  networkId=1337  block=4
+node1 peers: ["172.30.0.12:34788", "172.30.0.13:43158"]
+clique signers: ["0x483793b3a835c37a14b3cab286048d2da9c262b1", "0x486fb389bfdab74f066bc19e31a7183d702fbafa", "0x5a00e2470a54fa99b7ca4146440a11c913708e92"]
+
+======== TASK 3: transaction from node1's account, observed from node3 ========
+tx hash submitted on node1: "0xda07b4b8c7cf1d99496a2b1a19673531934da93bdd5d59cf1957f0cefeaaa5b0"
+node3 sees tx   : 7 (blockNumber)
+node3 receipt   : "{\"status\":\"0x1\",\"block\":7,\"gas\":21000}"
+node3 balance of recipient (ETH): 5
+block 8  node1="0x1caa8d0cc728126367772cd492808e6d18ce361cb90854213255985053070356"
+          node3="0x1caa8d0cc728126367772cd492808e6d18ce361cb90854213255985053070356"
+
+======== TASK 4: fault injection - stop node3, observe, restore ========
+node3 stopped. node1 peerCount = 1 (was 2)
+chain continues with 2 of 3 signers (Clique needs >50%): block 11 -> 15
+node3 restarted; its peers (before re-adding): 1
+after addPeer: node3 peerCount = 2 | node3 block = 23 | node1 block = 24
+
+Explanation: with --nodiscover, peers are not found automatically, so after a restart
+a node only has the connections that other nodes re-dial to it; the rest must be
+re-added with admin.addPeer (or listed in static-nodes.json).
+Clique PoA keeps producing blocks while a majority (2 of 3) of signers is online;
+the returning node syncs missing blocks from its peers and catches up to the head.
+A configuration mismatch (e.g. different --networkid or genesis) would make the
+handshake fail and peerCount would stay 0.

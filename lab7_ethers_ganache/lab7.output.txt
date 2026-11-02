@@ -1,0 +1,38 @@
+=== Task 1: connect ===
+RPC: http://127.0.0.1:8545 | chainId: 31337 | block: 6
+  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 9995.498170515723607404 ETH
+  0x70997970C51812dc3A010C7d01b50e0d17dc79C8 10001.5 ETH
+  0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC 10003.0 ETH
+  0x90F79bf6EB2c4f870365E785982E1f101E93b906 10000.0 ETH
+  0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65 10000.0 ETH
+
+=== Task 2a: Ether transfer ===
+--- Receipt: Ether transfer
+  tx hash    : 0x34a3f3bff771b8d64f9d560c2c1cf3a236d9e4e650af3b42bb216c790446c4e7
+  from       : 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  to         : 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+  block      : 7
+  status     : 1 (success)
+  gas used   : 21000 | gas price: 1396889518 | fee(wei): 29334679878000
+  value (wei): 1500000000000000000
+  receiver balance: 10001.5 -> 10003.0 ETH (change 1.5)
+
+=== Task 2b: smart-contract transaction (ERC20-like token) ===
+token at 0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+--- Receipt: token.transfer(250)
+  tx hash    : 0xff5fe76bd7a5233641c13e990222feb825d86dc4be6115b1e8c2409623d0395f
+  from       : 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  to         : 0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+  block      : 9
+  status     : 1 (success)
+  gas used   : 52300 | gas price: 1305334672 | fee(wei): 68269003345600
+  value (wei): 0
+  event      : Transfer [
+  '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+  '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+  '250'
+]
+  balances   : sender 750 | receiver 250
+
+=== Task 4 demo: failing call (transfer more than balance) ===
+  error: Insufficient token balance

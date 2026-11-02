@@ -1,0 +1,52 @@
+=== Task 1: transaction hashes ===
+Alice->Bob:10    a30d1fb198100e6afdfcf4e7f4bbd9d034a965e06630bf75dcdc82843d7b25b4
+Bob->Carol:4     1c27e2f21b5f537a623ef05b28ed28f3cf07535c36d2d112a745c851b69db780
+Carol->Dave:2    01c45ca0b9760140c2d0554cf01fb7a12fcdbb26e719e8f854df8e3440ae666f
+Dave->Eve:7      f92db7dfdb22bc70adde5b95ab5e79c95d12fe9993b90e7130017b78b904800c
+Eve->Frank:1     fcacf21c04889e86d807b5498e0d94d63e1ce855c207f818de73db5bb172e8a3
+Frank->Gina:3    157a3539a41b823e2d1808dbc0a5fc3d19396eab54c858b21f5e12ccf8334af2
+Gina->Hal:9      15281de8c1a263a62e79103173cd440621740e08af854cc4dfbfb3a61d4bb430
+Hal->Ivy:6       b78823d6fb63795b45e2788f9957e00cc0823be25482c5a803bbe92a50c1c6e7
+
+=== Task 2: Merkle tree ===
+Level 0 (8 nodes)
+    a30d1fb198100e6a...
+    1c27e2f21b5f537a...
+    01c45ca0b9760140...
+    f92db7dfdb22bc70...
+    fcacf21c04889e86...
+    157a3539a41b823e...
+    15281de8c1a263a6...
+    b78823d6fb63795b...
+Level 1 (4 nodes)
+    5e886e32394a886c...
+    4f1cb642b1924f75...
+    b55eebf23a631bc3...
+    9cb5751d23c10294...
+Level 2 (2 nodes)
+    7a6995029b3c8d63...
+    89f24f9a6f7618c7...
+Level 3 (1 nodes)
+    e6479cdbe2ff3961...
+Merkle root: e6479cdbe2ff3961548f8ea5ec5db51da949071aa3a6deb89c9e98e29dd655a2
+
+=== Task 3: modify tx at index 2, recompute only the path ===
+Hashes recomputed: 4 (vs 15 nodes for a full rebuild)
+Selective recomputation matches full rebuild: True
+  level 0: changed node indices [2]
+  level 1: changed node indices [1]
+  level 2: changed node indices [0]
+  level 3: changed node indices [0]
+
+=== Task 4: compare roots ===
+Original root: e6479cdbe2ff3961548f8ea5ec5db51da949071aa3a6deb89c9e98e29dd655a2
+Modified root: e1b5fff31c9b74574a775a2d19e22f46016d9e122bd3c1e5690e3826ec9826f4
+Roots equal  : False
+Merkle proof for modified tx verifies against new root : True
+Same proof with ORIGINAL tx against new root           : False
+
+Explanation: any change to a transaction changes its leaf hash and every hash on
+its path to the root, so the root changes. Comparing a single 32-byte root
+detects tampering in any of the N transactions. To prove one transaction is in a
+block you need only log2(N) sibling hashes (here 3 of 8 leaves), and updating one
+transaction needs only log2(N)+1 hashes instead of rehashing everything.
