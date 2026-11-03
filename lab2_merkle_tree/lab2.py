@@ -55,7 +55,7 @@ def verify_proof(tx, p, root):
 if __name__ == "__main__":
     txs = ["Alice->Bob:10", "Bob->Carol:4", "Carol->Dave:2", "Dave->Eve:7",
            "Eve->Frank:1", "Frank->Gina:3", "Gina->Hal:9", "Hal->Ivy:6"]
-    print("=== Task 1: transaction hashes ===")
+    print("Task 1: transaction hashes ")
     leaves = [h(t) for t in txs]
     for t, x in zip(txs, leaves):
         print(f"{t:<16} {x}")

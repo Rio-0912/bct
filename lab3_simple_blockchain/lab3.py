@@ -40,7 +40,7 @@ class Blockchain:
 
     def show(self):
         for b in self.chain:
-            print(f"  #{b.index} data={b.data!r}\n     prev={b.previous_hash[:20]}...\n     hash={b.hash[:20]}...")
+            print(f"  #{b.index} data={b.data!r}\n     prev={b.previous_hash}...\n     hash={b.hash}...")
 
 
 if __name__ == "__main__":
